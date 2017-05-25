@@ -27,6 +27,8 @@ public class Game extends Application {
 	double prevTime = 0;
 	int prefferedTime = (1000/fps);
 	int sleepTime = 0;
+	int spawnCap = 40;
+	int aiAmount = 0;
 	
 	public double mouseX = 0;
 	public double mouseY = 0;
@@ -80,6 +82,11 @@ public class Game extends Application {
 			}
 		}
 		
+		if (sides <= 4){
+			aiAmount += amount;
+		} else if (sides >= 5){
+			aiAmount += amount*2;
+		}
 	}
 
 	
@@ -94,6 +101,7 @@ public class Game extends Application {
 	    
 		for (int i = 0; i <2; i++) {
 			AiList.add(new Objects(30 + 72*i, 10, 2,"player32x32.png", 32, 32, "", 0, 0));
+			aiAmount ++;
 		}
 	    
 	    Group root = new Group();
@@ -111,7 +119,7 @@ public class Game extends Application {
 	    
 	    
 	    //keyboard input
-        theWindow.setOnKeyPressed(new EventHandler<KeyEvent>() {
+     	    theWindow.setOnKeyPressed(new EventHandler<KeyEvent>() {
                 public void handle(KeyEvent e) {
                     String code = e.getCode().toString();
  
@@ -123,7 +131,7 @@ public class Game extends Application {
                 }
             });
  
-        theWindow.setOnKeyReleased(new EventHandler<KeyEvent>() {
+      	    theWindow.setOnKeyReleased(new EventHandler<KeyEvent>() {
                 public void handle(KeyEvent e) {
                     String code = e.getCode().toString();
                     input.remove( code );
@@ -131,8 +139,8 @@ public class Game extends Application {
                 }
             });
         
-        //mouse input
-        theWindow.setOnMouseMoved(new EventHandler<MouseEvent>(){
+    	    //mouse input
+    	    theWindow.setOnMouseMoved(new EventHandler<MouseEvent>(){
         	public void handle(MouseEvent event){
         		mouseX = event.getX();
         		mouseY = event.getY();
@@ -198,7 +206,7 @@ public class Game extends Application {
 	    			if (blob.Left() < 0 || blob.Bottom() < 0 || 
 	    				blob.Right() > maxX || blob.Top() > maxY){
 	    					Remove.add(blob);
-	    					System.out.println("removed");
+	    					//System.out.println("removed");
 	    			}
 	    			
 	    			if (blob.Touching() == true){
@@ -228,6 +236,7 @@ public class Game extends Application {
 	    			AiList.remove(Delete);
 	    			Objects.objectlist.remove(Delete);
 	    			Delete = null;
+					aiAmount --;
 	    		}
 	    		
 	    		Remove.clear();
@@ -239,7 +248,7 @@ public class Game extends Application {
 	    		
 	    		*/
 	    		
-	    		if (spawnTimer <= 0){
+	    		if (spawnTimer <= 0 && aiAmount < spawnCap ){
 	    			spawn();
 	    			spawnTimer = spawnDelay;
 	    		}
