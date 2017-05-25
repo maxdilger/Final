@@ -27,6 +27,7 @@ public class Objects extends Game{
 		return (farx);
 	}
 	//bottom end of object
+	
 	public double Bottom(){
 		double fary = y + sizeY - 1;
 		return (fary);
